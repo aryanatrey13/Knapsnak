@@ -1,0 +1,49 @@
+#include <iostream>
+#include <vector>
+
+using std::vector;
+
+int gm(vector<int> weights, vector<int> values) {
+    int max_i = 0;
+    double max = 0;
+
+    for (int i = 0; i < weights.size(); i++) {
+        if (weights[i] != 0 && (double) values[i] / weights[i] > max) {
+            max = (double) values[i] / weights[i];
+            max_i = i;
+        }
+    }
+    return max_i;
+}
+
+double go(int capacity, vector<int> weights, vector<int> values) {
+    double value = 0.0;
+
+    for (int i = 0; i < weights.size(); i++) {
+        if (capacity == 0) return value;
+        int index = gm(weights, values);
+        int a = std::min(capacity, weights[index]);
+        value += a * (double) values[index] / weights[index];
+        weights[index] -= a;
+        capacity -= a;
+    }
+
+    return value;
+}
+
+int main() {
+    int z;
+    int capacity;
+    std::cin >> z >> capacity;
+    vector<int> values(z);
+    vector<int> weights(z);
+    for (int j = 0; j < z; j++) {
+        std::cin >> values[j] >> weights[j];
+    }
+
+    double optimal_value = go(capacity, weights, values);
+
+    std::cout.precision(10);
+    std::cout << optimal_value << std::endl;
+    return 0;
+}
