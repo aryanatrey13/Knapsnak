@@ -3,13 +3,13 @@
 
 using std::vector;
 
-int gm(vector<int> weights, vector<int> values) {
+int gm(vector<int> weight, vector<int> values) {
     int max_i = 0;
     double max = 0;
 
-    for (int i = 0; i < weights.size(); i++) {
-        if (weights[i] != 0 && (double) values[i] / weights[i] > max) {
-            max = (double) values[i] / weights[i];
+    for (int i = 0; i < weight.size(); i++) {
+        if (weight[i] != 0 && (double) values[i] / weight[i] > max) {
+            max = (double) values[i] / weight[i];
             max_i = i;
         }
     }
@@ -19,12 +19,12 @@ int gm(vector<int> weights, vector<int> values) {
 double go(int capacity, vector<int> weights, vector<int> values) {
     double value = 0.0;
 
-    for (int i = 0; i < weights.size(); i++) {
+    for (int i = 0; i < weight.size(); i++) {
         if (capacity == 0) return value;
-        int index = gm(weights, values);
-        int a = std::min(capacity, weights[index]);
-        value += a * (double) values[index] / weights[index];
-        weights[index] -= a;
+        int index = gm(weight, values);
+        int a = std::min(capacity, weight[index]);
+        value += a * (double) values[index] / weight[index];
+        weight[index] -= a;
         capacity -= a;
     }
 
@@ -36,12 +36,12 @@ int main() {
     int capacity;
     std::cin >> z >> capacity;
     vector<int> values(z);
-    vector<int> weights(z);
+    vector<int> weight(z);
     for (int j = 0; j < z; j++) {
-        std::cin >> values[j] >> weights[j];
+        std::cin >> values[j] >> weight[j];
     }
 
-    double optimal_value = go(capacity, weights, values);
+    double optimal_value = go(capacity, weight, values);
 
     std::cout.precision(10);
     std::cout << optimal_value << std::endl;
